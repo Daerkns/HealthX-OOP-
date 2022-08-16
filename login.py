@@ -1,4 +1,4 @@
-import hashlib
+import hashlib #library that has functions to apply hashes to strings and encrypt them
 
 
 def signup():
@@ -21,7 +21,7 @@ def login():
     email = input("Enter email: ")
     pwd = input("Enter password: ")
     auth = pwd.encode()
-    auth_hash = hashlib.md5(auth).hexdigest()
+    auth_hash = hashlib.md5(auth).hexdigest() #string object is returned as hexadecimal and double length
     with open("credentials.txt", "r") as f:
         stored_email, stored_pwd = f.read().split("\n")
     f.close()
