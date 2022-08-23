@@ -1,9 +1,9 @@
-from login import loginsystem
+from login import login, loginsystem
 
 
 def main():
 
-    account = loginsystem()
+    account = login()
 
     while True:
         print("""
