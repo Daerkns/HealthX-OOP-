@@ -1,9 +1,10 @@
-from login import Login
+from login import AccountCreation
+from user import *
 
 
 def main():
 
-    account = Login()
+    account = AccountCreation()
 
     while True:
         print("""
@@ -18,6 +19,10 @@ def main():
             account.login()
         else:
             print("Wrong Choice!")
+
+
+def interface():
+    pass
 
 
 if __name__ == '__main__':

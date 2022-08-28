@@ -1,9 +1,9 @@
-from login import Login
+from login import AccountCreation
 
 
 def main():
 
-    account = Login()
+    account = AccountCreation()
 
     while True:
         print("""
