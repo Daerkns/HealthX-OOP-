@@ -1,2 +1,2 @@
-# HealthX-OOP
-This is a project that aims to convert our HealthX Project written in C, to an Object Oriented Programming project with extra features.
+HealthX is an interactive program that reminds the user to do certain healthy activities for which they are awarded points. This project aims to encourage the user to look after their health by setting these reminders for various small activities that can contribute to the well-being in the long run. 
+The initial idea of this project was implemented using C programming language, however we plan to convert it to an Object Oriented Progamming language and extra features.
