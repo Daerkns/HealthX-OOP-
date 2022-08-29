@@ -15,8 +15,8 @@ class AccountCreation:
                     enc = conf_pwd.encode()
                     hash1 = hashlib.md5(enc).hexdigest()
                     with open("credentials.txt", "a") as f:
-                        f.write(email + "\t")
-                        f.write(hash1 + "\t")
+                        f.write(email + "\n")
+                        f.write(hash1 + "\n")
                         if type == 1:
                             f.write("Player\n")
                         elif type == 2:
@@ -32,10 +32,11 @@ class AccountCreation:
     def login(self):
         email = input("Enter email: ")
         pwd = input("Enter password: ")
+
         auth = pwd.encode()
         auth_hash = hashlib.md5(auth).hexdigest()
         with open("credentials.txt", "r") as f:
-            stored_email, stored_pwd, type = f.read().split("\n")
+            stored_email, stored_pwd, type = f.read().split()
         f.close()
 
         if email == stored_email and auth_hash == stored_pwd and type == "Player":
