@@ -1,4 +1,3 @@
-import imp
 import hashlib
 import sys
 
@@ -15,13 +14,13 @@ class AccountCreation:
                 if conf_pwd == pwd:
                     enc = conf_pwd.encode()
                     hash1 = hashlib.md5(enc).hexdigest()
-                    with open("credentials.txt", "w") as f:
-                        f.write(email + "\n")
-                        f.write(hash1 + "\n")
+                    with open("credentials.txt", "a") as f:
+                        f.write(email + "\t")
+                        f.write(hash1 + "\t")
                         if type == 1:
-                            f.write("Player")
+                            f.write("Player\n")
                         elif type == 2:
-                            f.write("Administrator")
+                            f.write("Administrator\n")
                     f.close()
                     print("You have registered successfully!")
                     break
@@ -29,21 +28,6 @@ class AccountCreation:
                     print("Password is not same as above! \n")
             else:
                 sys.exit("Error in input. Please enter 1 or 2.")
-
-            if conf_pwd == pwd:
-                enc = conf_pwd.encode()
-                hash1 = hashlib.md5(enc).hexdigest()
-                with open("credentials.txt", "w") as f:
-                    f.write(email + "\n")
-                    f.write(hash1 + "\n")
-                    if type == 1:
-                        f.write("Player")
-                    elif type == 2:
-                        f.write("Administrator")
-                f.close()
-                print("You have registered successfully!")
-            else:
-                print("Password is not same as above! \n")
 
     def login(self):
         email = input("Enter email: ")
