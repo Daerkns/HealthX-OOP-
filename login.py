@@ -1,5 +1,4 @@
 import imp
-from main import *
 import hashlib
 import sys
 
@@ -61,4 +60,3 @@ class AccountCreation:
             print("Administrator login was successful!")
         else:
             print("Login failed! Wrong Credentials or Credentials do not exist. \n")
-        interface()
