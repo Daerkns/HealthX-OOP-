@@ -2,7 +2,7 @@ import hashlib
 import sys
 
 
-class AccountCreation:
+class AccountCreation2:
 
     def signup(self):
         email = input("Enter email address: ")
