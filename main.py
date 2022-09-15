@@ -21,6 +21,10 @@ def main():
         exit()
 
     print("Welcome to HealthX!\nWhat do you want to do?\n1. Healthy Activity Reminder\n2. Exit Program")
+    # with open('currentuser.txt', 'r') as file:
+    #current_user = file.read()
+    # print(current_user)
+
     choice = int(input("Enter your choice: "))
     if choice == 1:
         he = HealthyActivity()

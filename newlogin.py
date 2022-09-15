@@ -6,7 +6,6 @@ class AccountCreation:
     def login(self, Username=None, Password=None):
         Username = input("Enter your username: ")
         Password = input("Enter your Password: ")
-
         if not len(Username or Password) < 1:
             if True:
                 db = open("credentials.txt", "r")
@@ -49,6 +48,9 @@ class AccountCreation:
         else:
             print("Please attempt login again")
             self.login()
+        with open('currentuser.txt', 'w') as f:
+            f.write(Username)
+            f.close()
 
     def signup(self, Username=None, Password1=None, Password2=None):
         Username = input("Enter a username:")
