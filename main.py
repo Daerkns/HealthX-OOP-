@@ -1,5 +1,6 @@
 from newlogin import AccountCreation
 from activities import HealthyActivity
+from PlayerLeaderboard import LB
 
 
 def main():
@@ -20,20 +21,26 @@ def main():
         print("Wrong Choice!")
         exit()
 
-    print("Welcome to HealthX!\nWhat do you want to do?\n1. Healthy Activity Reminder\n2. Exit Program")
+    print("Welcome to HealthX!\nWhat do you want to do?")
+    healthx()
     # with open('currentuser.txt', 'r') as file:
     #current_user = file.read()
     # print(current_user)
 
-    choice = int(input("Enter your choice: "))
+
+def healthx():
+    choice = int(input(
+        "Enter your choice: \n1. Healthy Activity Reminder\n2. View Leaderboard of Players\n3. Exit Program\n"))
     if choice == 1:
         he = HealthyActivity()
         he.activity()
     elif choice == 2:
+        LB.leaderboard()
+    elif choice == 3:
         exit()
     else:
         print("Error in input.")
-        exit()
+    healthx()
 
 
 if __name__ == '__main__':

@@ -1,13 +1,16 @@
+from operator import index
 import winsound
 import os
 import random
 import time
+import pandas as pd
+import os.path
 
 
 class HealthyActivity:
 
     def confirmation(self):
-        choice = int(input("Did you do the activity?\n1.Yes\n2. No \n"))
+        choice = int(input("Did you do the activity?\n1.Yes\n2.No \n"))
 
         praise = ["There you go! You've done the right thing.\n",
                   "Keep up the good work.\n",
@@ -40,23 +43,78 @@ class HealthyActivity:
     def stretch(self):
         self.countdown(int(25))
         self.confirmation()
+        self.addpoints(int(100))
 
     def water(self):
         self.countdown(int(15))
         self.confirmation()
+        self.addpoints(int(300))
 
     def sunlight(self):
         self.countdown(int(10))
         self.confirmation()
+        self.addpoints(int(1000))
 
     def test(self):
         self.countdown(int(5))
         self.confirmation()
+        self.addpoints(int(200))
 
     def play_sound(self):
         frequency = 500
         duration = 1000  # setting duration to 1000ms
         winsound.Beep(frequency, duration)
+
+    def addpoints(self, points):
+
+        with open('currentuser.txt') as file:
+            current_user = file.read()  # detecting the current logged in user
+            print("Logged in as: " + current_user)
+
+        if os.path.isfile('leaderboard.csv'):
+            data = pd.read_csv('leaderboard.csv')
+            placeholder = data['Player'].str.contains(current_user).sum()
+            if placeholder > 0:
+                data.loc[data['Player'] == current_user,
+                         'HealthPoints'] += points
+                data.to_csv('leaderboard.csv', mode='w+', index=False)
+
+                print(f"{current_user}'s stats were updated on leaderboard file.")
+
+            elif placeholder == 0:
+                data.loc[len(data.index)] = [current_user, points]
+                data.to_csv('leaderboard.csv', mode='w+', index=False)
+
+                print(
+                    f"New entry of {current_user}'s stats was added to Leaderboard.")
+
+        else:
+            leaderboard = [[current_user, points]]
+            df = pd.DataFrame(leaderboard, columns=['Player', 'HealthPoints'])
+            df.to_csv('leaderboard.csv', index=False)
+            print(
+                f"Leaderboard file was created along with {current_user}'s stats.")
+
+        #leaderboard = dict()
+        # with open("leaderboard.txt", 'r+') as file2:
+        # for name, p in zip(file2, file2):
+        #leaderboard[name.strip()] = {"HPoints": int(p)}
+        # if leaderboard['name'] == current_user:
+        #leaderboard['HPoints'] += points
+        # else:
+        # pass
+
+        #print("New values: ")
+        # print(leaderboard)
+
+        # with open('leaderboard.txt', 'a') as file2:
+        #file2.write(current_user + " " + str(points))
+
+        # leaderboard = {'Username': current_user, 'Points': points}
+
+        # with open('leaderboard.txt') as file2: # reading all the lines in leaderboard file. Format of leaderboard file = each line has username and current points
+        #    leaderboard = file2.readlines()
+        #    if current_user in leaderboard:
 
     def countdown(self, t):
 
@@ -69,8 +127,7 @@ class HealthyActivity:
         self.play_sound()
 
     def activity(self):
-        opt = int(input(
-            "Which activity reminder do you want to set?\n1.Stretch break\n2.Drinking water\n3.Sunlight exposure\n4.Test/Experimental\n"))
+        opt = int(input("Which activity reminder do you want to set?\n1.Stretch break\n2.Drinking water\n3.Sunlight exposure\n4.Test/Experimental\n5.Exit Program\n"))
         if opt == 1:
             self.stretch()
         elif opt == 2:
@@ -79,5 +136,7 @@ class HealthyActivity:
             self.sunlight()
         elif opt == 4:
             self.test()
+        elif opt == 5:
+            exit()
         else:
             print("Invalid input")
