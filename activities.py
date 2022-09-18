@@ -9,8 +9,9 @@ import os.path
 
 class HealthyActivity:
 
-    def confirmation(self):
-        choice = int(input("Did you do the activity?\n1.Yes\n2.No \n"))
+    def confirmation(self, activity_name):
+        choice = int(input(
+            "Did you do the activity?\nIf yes --> enter 1\nIf no  --> enter 2\n1. Yes\n2. No\n"))
 
         praise = ["There you go! You've done the right thing.\n",
                   "Keep up the good work.\n",
@@ -35,30 +36,38 @@ class HealthyActivity:
         random_next_time = random.choice(next_time)
         if choice == 1:
             print(random_praise)
+            if activity_name == 'stretch':
+                self.addpoints(int(100))
+            elif activity_name == 'water':
+                self.addpoints(int(300))
+            elif activity_name == 'sunlight':
+                self.addpoints(int(1000))
+            elif activity_name == 'test':
+                self.addpoints(int(200))
         elif choice == 2:
             print(random_next_time)
         else:
             print("Invalid input")
 
     def stretch(self):
+        activity_name = 'stretch'
         self.countdown(int(25))
-        self.confirmation()
-        self.addpoints(int(100))
+        self.confirmation(activity_name)
 
     def water(self):
+        activity_name = 'water'
         self.countdown(int(15))
-        self.confirmation()
-        self.addpoints(int(300))
+        self.confirmation(activity_name)
 
     def sunlight(self):
+        activity_name = 'sunlight'
         self.countdown(int(10))
-        self.confirmation()
-        self.addpoints(int(1000))
+        self.confirmation(activity_name)
 
     def test(self):
+        activity_name = 'test'
         self.countdown(int(5))
-        self.confirmation()
-        self.addpoints(int(200))
+        self.confirmation(activity_name)
 
     def play_sound(self):
         frequency = 500
@@ -69,7 +78,7 @@ class HealthyActivity:
 
         with open('currentuser.txt') as file:
             current_user = file.read()  # detecting the current logged in user
-            print("Logged in as: " + current_user)
+            print("You are currently logged in as: " + current_user)
 
         if os.path.isfile('leaderboard.csv'):
             data = pd.read_csv('leaderboard.csv')
@@ -127,7 +136,7 @@ class HealthyActivity:
         self.play_sound()
 
     def activity(self):
-        opt = int(input("Which activity reminder do you want to set?\n1.Stretch break\n2.Drinking water\n3.Sunlight exposure\n4.Test/Experimental\n5.Exit Program\n"))
+        opt = int(input("Which activity reminder do you want to set?\n1. Stretch break\n2. Drinking water\n3. Sunlight exposure\n4. Test/Experimental\n5. Go Back\n6. Exit Program\n"))
         if opt == 1:
             self.stretch()
         elif opt == 2:
@@ -137,6 +146,8 @@ class HealthyActivity:
         elif opt == 4:
             self.test()
         elif opt == 5:
+            pass
+        elif opt == 6:
             exit()
         else:
             print("Invalid input")

@@ -1,47 +1,91 @@
-import hashlib
-import sys
+import bcrypt
 
 
-class AccountCreation2:
+class AccountCreation:
 
-    def signup(self):
-        email = input("Enter email address: ")
-        pwd = input("Enter password: ")
-        conf_pwd = input("Confirm password: ")
-        type = int(input("User type? 1. for Player 2. for Administrator"))
-        while True:
-            if type == 1 or 2:
-                if conf_pwd == pwd:
-                    enc = conf_pwd.encode()
-                    hash1 = hashlib.md5(enc).hexdigest()
-                    with open("credentials.txt", "a") as f:
-                        f.write(email + "\n")
-                        f.write(hash1 + "\n")
-                        if type == 1:
-                            f.write("Player\n")
-                        elif type == 2:
-                            f.write("Administrator\n")
-                    f.close()
-                    print("You have registered successfully!")
-                    break
-                else:
-                    print("Password is not same as above! \n")
+    def login(self, Username=None, Password=None):
+        Username = input("Enter your username: ")
+        Password = input("Enter your Password: ")
+        if not len(Username or Password) < 1:
+            if True:
+                db = open("credentials.txt", "r")
+                d = []
+                f = []
+                for i in db:
+                    a, b = i.split(",")
+                    b = b.strip()
+                    c = a, b
+                    d.append(a)
+                    f.append(b)
+                    data = dict(zip(d, f))
+                try:
+                    if Username in data:
+                        hashed = data[Username].strip('b')
+                        hashed = hashed.replace("'", "")
+                        hashed = hashed.encode('utf-8')
+
+                        try:
+                            if bcrypt.checkpw(Password.encode(), hashed):
+
+                                print("Login success!")
+                                print("Hi", Username)
+                            else:
+                                print("Wrong password")
+                                self.login()
+                        except:
+                            print("Incorrect passwords or username.")
+                            self.login()
+                    else:
+                        print("Username doesn't exist.")
+                        self.login()
+                except:
+                    print("Password or username doesn't exist.")
+                    self.login()
             else:
-                sys.exit("Error in input. Please enter 1 or 2.")
+                print("Error logging into the system")
+                self.login()
 
-    def login(self):
-        email = input("Enter email: ")
-        pwd = input("Enter password: ")
-
-        auth = pwd.encode()
-        auth_hash = hashlib.md5(auth).hexdigest()
-        with open("credentials.txt", "r") as f:
-            stored_email, stored_pwd, type = f.read().split()
-        f.close()
-
-        if email == stored_email and auth_hash == stored_pwd and type == "Player":
-            print("Player login was successful!")
-        elif email == stored_email and auth_hash == stored_pwd and type == "Administrator":
-            print("Administrator login was successful!")
         else:
-            print("Login failed! Wrong Credentials or Credentials do not exist. \n")
+            print("Please attempt login again.")
+            self.login()
+        with open('currentuser.txt', 'w') as f:
+            f.write(Username)
+            f.close()
+
+    def signup(self, Username=None, Password1=None, Password2=None):
+        Username = input("Enter a username: ")
+        Password1 = input("Create password with minimum 8 characters: ")
+        Password2 = input("Confirm Password: ")
+        db = open("credentials.txt", "r")
+        d = []
+        for i in db:
+            a, b = i.split(",")
+            b = b.strip()
+            c = a, b
+            d.append(a)
+        if not len(Password1) <= 8:
+            db = open("credentials.txt", "r")
+            if not Username == None:
+                if len(Username) < 1:
+                    print("Please provide a username.")
+                    self.signup()
+                elif Username in d:
+                    print("Username already exists.")
+                    self.signup()
+                else:
+                    if Password1 == Password2:
+                        Password1 = Password1.encode('utf-8')
+                        Password1 = bcrypt.hashpw(Password1, bcrypt.gensalt())
+
+                        db = open("credentials.txt", "a")
+                        db.write(Username+", "+str(Password1)+"\n")
+                        print("User created successfully!")
+                        print("Please login to proceed....")
+                        db.close()
+                        self.login()
+                    else:
+                        print("Passwords do not match.")
+                        self.signup()
+        else:
+            print("Password too short. Enter at least 8 characters.")
+            self.signup()
