@@ -54,7 +54,7 @@ class AccountCreation:
 
     def signup(self, Username=None, Password1=None, Password2=None):
         Username = input("Enter a username: ")
-        Password1 = input("Create password with minimum 8 characters: ")
+        Password1 = input("Create password with more than 8 characters: ")
         Password2 = input("Confirm Password: ")
         db = open("credentials.txt", "r")
         d = []
